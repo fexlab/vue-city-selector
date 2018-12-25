@@ -1,5 +1,5 @@
 {
-  "name": "vue-city-selector",
+  "name": "@felab/vue-city-selector",
   "version": "1.0.0",
   "description": "基于 Vue 的城市选择器",
   "private": false,
