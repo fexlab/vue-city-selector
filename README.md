@@ -46,7 +46,7 @@ Vue.use(VCitySelector)
 ```html
 <!-- *.vue -->
 <template>
-	<el-form label-width="80px" ref="form" :model="form" :rules="rules" label-position="left">
+  <el-form label-width="80px" ref="form" :model="form" :rules="rules" label-position="left">
     <el-form-item label="城市" prop="cityId">
       <v-city-selector
         v-model="form.cityId"

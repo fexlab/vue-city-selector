@@ -1,10 +1,10 @@
 {
   "name": "@felab/vue-city-selector",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "基于 Vue 的城市选择器",
   "private": false,
   "license": "MIT",
-  "main": "lib/vcityselector.umd.min.js",
+  "main": "lib/vue-city-selector.umd.min.js",
   "author": {
     "name": "咖啡猫",
     "email": "18375006@qq.com"
