@@ -1,20 +1,42 @@
 {
   "name": "vue-city-selector",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "基于 Vue 的城市选择器",
+  "private": false,
+  "license": "MIT",
+  "main": "lib/vcityselector.umd.min.js",
+  "author": {
+    "name": "咖啡猫",
+    "email": "18375006@qq.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fexlab/vue-city-selector.git"
+  },
+  "homepage": "https://github.com/fexlab/vue-city-selector",
+  "bugs": "https://github.com/fexlab/vue-city-selector/issues",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "lib": "vue-cli-service build --target lib --name vue-city-selector --dest lib packages/index.js",
     "lint": "vue-cli-service lint"
   },
+  "keywords": [
+    "city-selector",
+    "element",
+    "vue"
+  ],
   "dependencies": {
-    "vue": "^2.5.17"
+    "element-ui": "^2.4.11",
+    "vue": "^2.5.17",
+    "vue-click-outside": "^1.0.7"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.2.0",
     "@vue/cli-plugin-eslint": "^3.2.0",
     "@vue/cli-service": "^3.2.0",
     "babel-eslint": "^10.0.1",
+    "babel-plugin-component": "^1.1.1",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0-0",
     "vue-template-compiler": "^2.5.17"
