@@ -146,7 +146,7 @@ export default {
     },
     // 同步数据到上层
     syncData() {
-      this.$emit('change', this.selectedValues);
+      this.$emit('change', this.selectedValue, this.selectedName);
     },
     // 选中变化
     checkedChange(item) {

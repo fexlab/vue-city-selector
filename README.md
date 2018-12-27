@@ -7,17 +7,15 @@
 
 ### 安装
 
-推荐使用npm安装：
-
 ```shell
-npm install vue-city-selector
+npm install @felab/vue-city-selector
 ```
 
 ###  使用
 
 ```js
 // main.js
-import VCitySelector from "vue-city-selector"
+import VCitySelector from "@felab/vue-city-selector"
 
 Vue.use(Element)
 Vue.use(VCitySelector)
@@ -50,10 +48,8 @@ Vue.use(VCitySelector)
     <el-form-item label="城市" prop="cityId">
       <v-city-selector
         v-model="form.cityId"
+        @change="handleCitySelector"
         placeholder="请选择城市"/>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="submit">测试提交</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -78,15 +74,7 @@ export default {
     };
   },
   methods: {
-    submit() {
-      this.$refs.form.validate(valid => {
-        if (valid) {
-          this.$message({
-            message: "测试通过",
-            type: "success"
-          });
-        }
-      });
+    handleCitySelector(id, name) {
     }
   }
 };
@@ -96,7 +84,7 @@ export default {
 ### 依赖
 
 ```
-- Vue
-- ElementUI
-- vue-click-outside
+- [Vue](https://cn.vuejs.org/)
+- [ElementUI 2.x](https://element.eleme.io/)
+- [vue-click-outside](https://www.npmjs.com/package/vue-click-outside)
 ```

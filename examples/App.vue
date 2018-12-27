@@ -2,7 +2,7 @@
   <div>
     <p class="demo-title">Vue-City-selector 示例</p>
     <div class="demo-wrapper">
-      <v-city-selector v-model="cityId" />
+      <v-city-selector v-model="cityId" @change="handleCitySelector"/>
     </div>
   </div>
 </template>
@@ -12,6 +12,12 @@ export default {
   data() {
     return {
       cityId: 131
+    }
+  },
+  methods: {
+    handleCitySelector(id, name) {
+      /* eslint-disable */
+      console.log(id, name)
     }
   }
 }
