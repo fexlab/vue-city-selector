@@ -23,13 +23,15 @@ Vue.use(VCitySelector)
 
 ### Attributes
 
-| 参数                                                         | 说明       | 类型    | 可选值            | 默认值 |
-| ------------------------------------------------------------ | ---------- | ------- | ----------------- | ------ |
-| v-model(value)                                               | 绑定值     | Number   | --                | --     |
-| placeholder                                                  | 占位文本   | String  | --                | 请选择 |
-| size                                                         | 尺寸       | String  | medium/small/mini | --     |
-| disabled                                                     | 禁用       | Boolean | True/false        | false  |
-| clearable                                                    | 是否可以清空选项 | Boolean | True/false        | true  |
+| 参数               | 说明       | 类型    | 可选值            | 默认值 |
+| ----------------- | ---------- | ------- | ----------------- | ------ |
+| v-model(value)    | 绑定值（单选number，多选array）     | Number/Array   | --                | --     |
+| placeholder       | 占位文本   | String  | --                | 请选择 |
+| size              | 尺寸       | String  | medium/small/mini | --     |
+| disabled          | 禁用       | Boolean | True/false        | false  |
+| clearable         | 是否可以清空选项 | Boolean | True/false        | true  |
+| multiple          | 是否多选 | Boolean | True/false        | false  |
+| multiple-limit    | 最多选择上限 | Number |         | 0  |
 
 ### 事件
 

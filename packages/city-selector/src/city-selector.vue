@@ -9,17 +9,21 @@
         <el-select
           v-model="selectedValue"
           :placeholder="placeholder"
-          :clearable="clearable"
+          :clearable="!multiple && clearable"
+          :multiple="multiple"
           style="width: 100%;"
           popper-class="v-city-selector-popper-hide"
           :disabled="disabled"
           :size="size"
+          @remove-tag="handleRemoveTag"
           @focus="handleFocus"
           @clear="handleClear">
-          <el-option
-            v-if="selectedValue"
-            :label="selectedName"
-            :value="selectedValue"/>
+          <template v-for="(item, index) in selectedOptions">
+            <el-option
+              :key="index"
+              :label="item.name"
+              :value="item.id"/>
+          </template>
         </el-select>
       </div>
       <div
@@ -70,8 +74,7 @@ export default {
 
   props: {
     value: {
-      type: Number,
-      default: 0
+      required: true
     },
     placeholder: {
       type: String,
@@ -84,6 +87,14 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    multiple: {
+      type: Boolean,
+      default: false
+    },
+    multipleLimit: {
+      type: Number,
+      default: 0
     },
     size: {
       type: String,
@@ -103,6 +114,7 @@ export default {
     })
     return {
       showPopover: false,
+      selectedOptions: [],
       selectedValue: '',
       selectedName: '',
       cityList: CitySelectorData,
@@ -133,26 +145,65 @@ export default {
   methods: {
     // 初始化
     initDatas() {
-      this.selectedValue = this.value;
       this.recursiveOpt(this.cityList);
     },
     recursiveOpt(cityList) {
-      let _city = ''
-      Object.keys(cityList).forEach(key => {
-        if (_city) return
-        _city = cityList[key].find(city => city.id === this.value)
-      })
-      this.selectedName = _city ? _city.name : ''
+      if (this.multiple) {
+        if (!Array.isArray(this.value)) throw new Error('"value" must an array')
+        this.value.forEach(item => {
+          let _city = ''
+          Object.keys(cityList).forEach(key => {
+            if (_city) return
+            _city = cityList[key].find(city => city.id === item)
+          })
+          this.selectedOptions.push(_city)
+        })
+      } else {
+        if (!Number.isInteger(this.value)) throw new Error('"value" must an integer')
+        let _city = ''
+        Object.keys(cityList).forEach(key => {
+          if (_city) return
+          _city = cityList[key].find(city => city.id === this.value)
+        })
+        this.selectedOptions.push(_city)
+      }
+      this.syncData()
     },
     // 同步数据到上层
     syncData() {
-      this.$emit('change', this.selectedValue, this.selectedName);
+      if (this.multiple) {
+        this.selectedValue = this.selectedOptions.map(item => item.id)
+        this.$emit('change', this.selectedOptions);
+      } else {
+        this.selectedValue = ''
+        let selectedName = ''
+        if (this.selectedOptions.length > 0) {
+          this.selectedValue = this.selectedOptions[0].id
+          selectedName = this.selectedOptions[0].name
+        }
+        this.$emit('change', this.selectedValue, selectedName)
+      }
     },
     // 选中变化
-    checkedChange(item) {
-      this.selectedValue = item.id
-      this.selectedName = item.name
+    checkedChange({ id, name }) {
+      if (this.multiple) {
+        let isExist = this.selectedOptions.findIndex(option => option.id === id)
+        if ((this.multipleLimit <= 0 || this.multipleLimit > this.selectedOptions.length) && 0 > isExist) {
+          this.selectedOptions.push({ id, name })
+        }
+      } else {
+        this.selectedOptions = [{ id, name }]
+      }
+
       this.hidePopover()
+      this.syncData()
+    },
+    // 多选移除标签
+    handleRemoveTag(id) {
+      let idx = this.selectedOptions.findIndex(option => option.id === id)
+      if (idx > -1) {
+        this.selectedOptions.splice(idx, 1)
+      }
       this.syncData()
     },
     handleFocus(evt) {
@@ -161,8 +212,7 @@ export default {
       this.$emit('focus', evt);
     },
     handleClear() {
-      this.selectedValue = ''
-      this.selectedName = []
+      this.selectedOptions = []
       this.syncData()
     },
     hidePopover(evt) {
