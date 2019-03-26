@@ -125,13 +125,15 @@ export default {
     }
   },
 
-  created() {
-    this.initDatas()
-  },
-
   watch: {
-    value() {
-      this.initDatas()
+    value: {
+      deep: true,
+      handler() {
+        if (!this.hasInitModel) {
+          this.initDatas()
+          this.hasInitModel = true
+        }
+      }
     }
   },
 
@@ -142,32 +144,49 @@ export default {
     }
   },
 
+  created() {
+    this.initDatas();
+  },
+
   methods: {
     // 初始化
     initDatas() {
       this.recursiveOpt(this.cityList);
     },
     recursiveOpt(cityList) {
+      let _selectedOptions = []
       if (this.multiple) {
-        if (!Array.isArray(this.value)) throw new Error('"value" must an array')
+        // 多选
+        if (!Array.isArray(this.value)) throw new Error('"value" is not Array')
         this.value.forEach(item => {
           let _city = ''
           Object.keys(cityList).forEach(key => {
-            if (_city) return
+            if (_city || key === 'hot') return
             _city = cityList[key].find(city => city.id === item)
           })
-          this.selectedOptions.push(_city)
+          _selectedOptions.push({ id: _city.id, name: _city.name })
         })
+
+        // 初始化选中值
+        this.selectedValue = _selectedOptions.map(item => item.id)
       } else {
-        if (!Number.isInteger(this.value)) throw new Error('"value" must an integer')
+        // 单选
+        if (!Number.isInteger(this.value)) throw new Error('"value" is not Integer')
         let _city = ''
         Object.keys(cityList).forEach(key => {
-          if (_city) return
+          if (_city || key === 'hot') return
           _city = cityList[key].find(city => city.id === this.value)
         })
-        this.selectedOptions.push(_city)
+        _selectedOptions.push({ id: _city.id, name: _city.name })
+
+        // 初始化选中值
+        this.selectedValue = ''
+        if (_selectedOptions.length > 0) {
+          this.selectedValue = _selectedOptions[0].id
+        }
       }
-      this.syncData()
+
+      this.selectedOptions = _selectedOptions
     },
     // 同步数据到上层
     syncData() {

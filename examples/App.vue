@@ -17,6 +17,7 @@ export default {
   methods: {
     handleCitySelector(id, name) {
       /* eslint-disable */
+      this.cityId = id
       console.log(id, name)
     }
   }
