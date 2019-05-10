@@ -120,19 +120,15 @@ export default {
       cityList: CitySelectorData,
       tagsArr,
       tags,
-      tagKey: '热门',
-      hasInitModel: false
+      tagKey: '热门'
     }
   },
 
   watch: {
     value: {
-      deep: true,
+      immediate: true,
       handler() {
-        if (!this.hasInitModel) {
-          this.initDatas()
-          this.hasInitModel = true
-        }
+        this.initDatas()
       }
     }
   },
@@ -142,10 +138,6 @@ export default {
       const { tagKey, tags } = this
       return tags[tagKey]
     }
-  },
-
-  created() {
-    this.initDatas();
   },
 
   methods: {
@@ -171,18 +163,22 @@ export default {
         this.selectedValue = _selectedOptions.map(item => item.id)
       } else {
         // 单选
-        if (!Number.isInteger(this.value)) throw new Error('"value" is not Integer')
-        let _city = ''
-        Object.keys(cityList).forEach(key => {
-          if (_city || key === 'hot') return
-          _city = cityList[key].find(city => city.id === this.value)
-        })
-        _selectedOptions.push({ id: _city.id, name: _city.name })
+        if (!Number.isInteger(this.value) || this.value === 0) {
+          _selectedOptions = []
+          this.selectedValue = ''
+        } else {
+          let _city = ''
+          Object.keys(cityList).forEach(key => {
+            if (_city || key === 'hot') return
+            _city = cityList[key].find(city => city.id === this.value)
+          })
+          _selectedOptions.push({ id: _city.id, name: _city.name })
 
-        // 初始化选中值
-        this.selectedValue = ''
-        if (_selectedOptions.length > 0) {
-          this.selectedValue = _selectedOptions[0].id
+          // 初始化选中值
+          this.selectedValue = ''
+          if (_selectedOptions.length > 0) {
+            this.selectedValue = _selectedOptions[0].id
+          }
         }
       }
 
